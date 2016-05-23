@@ -1,72 +1,74 @@
-﻿@model MvcSinemaOdev.ViewModel.BiletViewModel
+﻿@model MvcSinemaOdev.ViewModel.CalisanViewModel
 @{
     ViewBag.Title = "Index";
 }
-
-
 <link href="~/Content/bootstrap.css" rel="stylesheet" />
 
 
 <div class="col-md-1">
-    <input type="button" value="Yeni Bilet Ekle" id="btn-create" class="btn-primary" />
+    <a class="btn btn-success " data-toggle="modal" data-target=".bootstrapmodal">Kullanıcı Ekle</a>
 </div>
 <div class="col-md-6">
-
-
-
     <div id="user-content">
-        @Html.Action("BiletList", "Bilet")
+        @Html.Action("CalisanList", "Calisan")
     </div>
-    <div id="dialog-user" title="Bilet  İşlemleri" class="media-list">
-        @using (Ajax.BeginForm("Create", "Bilet", FormMethod.Post, new AjaxOptions { OnSuccess = "Create" }, new { id = "frm-create" }))
-        {
-            @Html.HiddenFor(m => m.BiletIDNumber)
+    <div class="col-md-6">
+        <div class="modal fade bootstrapmodal" role="dialog">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-title">
+                        <button type="button" class="btn btn-group-justified btn-primary ">İşlemler</button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Ajax.BeginForm("Create", "Calisan", FormMethod.Post, new AjaxOptions { OnSuccess = "Create" }, new { id = "frm-create" }))
+                        {
+                            @Html.HiddenFor(m => m.CalisanIDNumber)
 
-            <div>
-                Koltuk No
-
-                @Html.TextBoxFor(m => m.BiletKoltukNumaraNumber, new { @class = "form-control" })
+                            <div class="form-group">
+                                Çalışan   Ad:
+                                @Html.TextBoxFor(m => m.CalisanAdNumber, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                Çalışan   Soyad:
+                                @Html.TextBoxFor(m => m.CalisanSoyadNumber, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                Çalışan   TC NO:
+                                @Html.TextBoxFor(m => m.CalisanTcNoNumber, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                Kullanıcı Adı:
+                                @Html.TextBoxFor(m => m.CalisanKullaniciAdNumber, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                Çalışan   Şifre:
+                                @Html.TextBoxFor(m => m.CalisanParolaNumber, new { @class = "form-control" })
+                            </div>
+                            <div>
+                                <input type="submit" value="Kaydet" class="btn btn success" />
+                                <button type="button" class="btn btn-default" data-dismiss="modal">İptal</button>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
-           
-            <div>
-                Film  Seç
-                @Html.DropDownList("FilmIDNumber", "----Film  Seçiniz-----")
-
-            </div>
-            <div>
-                Satış  Seç
-                @Html.DropDownList("SatisIDNumber", "----Fiyat Seç-----")
-
-            </div>
-            <div>
-                <input type="submit" value="Kaydet" class="btn success" />
-            </div>
-        }
+        </div>
     </div>
-
 </div>
 <div class="col-md-5">
-
 </div>
-
 <script type="text/javascript">
-    $(document).ready(function () {   //ekleme işlemi için
-        $("#btn-create").click(function () {
-            $("#dialog-user").dialog("open");
-            $("#frm-create")[0].reset();  //ekledikten sonra formu temizleyelim
-            $("#BiletIDNumber").val("0");
-        });
-
-        $("#dialog-user").dialog({
-
-            autoOpen: false
-        });
-    });
     function Create(result) {   //ekleme sonucunda tekrardann listeleme yap
         if (result == "1") {
-            window.location.href = "@Url.Action("Index","Bilet")";
+            window.location.href = "@Url.Action("Index","Calisan")";
+
 
         }
     }
 </script>
+
+
+
+
+
 
