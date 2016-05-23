@@ -1,4 +1,4 @@
-﻿@model MvcSinemaOdev.ViewModel.FilmViewModel
+﻿@model MvcSinemaOdev.ViewModel.FilmTurViewModel
 @{
     ViewBag.Title = "Index";
 }
@@ -7,11 +7,11 @@
 
 
 <div class="col-md-1">
-    <a class="btn btn-success " data-toggle="modal" data-target=".bootstrapmodal">Film Ekle</a>
+    <a class="btn btn-success " data-toggle="modal" data-target=".bootstrapmodal">Film Tür Ekle</a>
 </div>
 <div class="col-md-6">
     <div id="user-content">
-        @Html.Action("FilmList", "Film")
+        @Html.Action("FilmTurList", "FilmTur")
     </div>
     <div class="col-md-6">
         <div class="modal fade bootstrapmodal" role="dialog">
@@ -21,40 +21,19 @@
                         <button type="button" class="btn btn-group-justified btn-primary ">İşlemler</button>
                     </div>
                     <div class="modal-body">
-                       @using (Ajax.BeginForm("Create", "Film", FormMethod.Post, new AjaxOptions { OnSuccess = "Create" }, new { id = "frm-create" }))
-                       {
-                        @Html.HiddenFor(m => m.FilmIDNumber)
+                        @using (Ajax.BeginForm("Create", "FilmTur", FormMethod.Post, new AjaxOptions { OnSuccess = "Create" }, new { id = "frm-create" }))
+                        {
+                            @Html.HiddenFor(m => m.FilmTurNumber)
 
-                        <div>
-                            Film  Ad:
+                            <div>
+                                Tür Adı
 
-                            @Html.TextBoxFor(m => m.FilmAdName, new { @class = "form-control" })
-                        </div>
-                        <div>
-                            3 boyutlumu
-                            @Html.CheckBoxFor(m => m.FilmUcBoyutlumuCheck)
-
-                        </div>
-                        <div>
-                            yerli mi
-                            @Html.CheckBoxFor(m => m.FilmYerlimiCheck)
-
-                        </div>
-                        <div>
-                            Film Süre
-                            @Html.TextBoxFor(m => m.FilmSureTime, new { @class = "form-control" })
-
-
-                        </div>
-                        <div>
-                            Film Türü Seç
-                            @Html.DropDownList("FilmTurIDNumber", ViewBag.FilmTurIDNumber as SelectList, "----Film Tür Seçiniz-----", new { @class = "form-control" })
-
-                        </div>
-                        <div>
-                            <input type="submit" value="Kaydet" class="btn success" />
-                        </div>
-                       }
+                                @Html.TextBoxFor(m => m.FilmTurName,new {@class="form-control" })
+                            </div>
+                            <div>
+                                <input type="submit" value="Kaydet" class="btn success" />
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -66,12 +45,14 @@
 <script type="text/javascript">
     function Create(result) {   //ekleme sonucunda tekrardann listeleme yap
         if (result == "1") {
-            window.location.href = "@Url.Action("Index","Film")";
+            window.location.href = "@Url.Action("Index","FilmTur")";
 
 
         }
     }
 </script>
+
+
 
 
 

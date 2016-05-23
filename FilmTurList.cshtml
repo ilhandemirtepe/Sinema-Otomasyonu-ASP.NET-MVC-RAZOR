@@ -1,0 +1,89 @@
+﻿@model List<MvcSinemaOdev.ViewModel.FilmTurViewModel>
+
+<meta charset="utf-8">
+<title>jQuery UI Dialog - Default functionality</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-6">
+        <table class=" table table-inverse">
+            <thead>
+                <tr>
+                    <td>
+                        Tur Adı
+                    </td>
+
+                    <td>
+                        Güncelle
+                    </td>
+                    <td>Sil</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var kullanici in Model)
+                {
+                    <tr>
+                        <td>
+                            @kullanici.FilmTurName
+                        </td>
+
+                        <td>
+                            <input type="button" style="background-color:#f64747" value="Güncelle" data-id="@kullanici.FilmTurNumber" class="btn-update" />
+                        </td>
+                        <td>
+                            <input type="button" style="background-color:#ff0000" value="Sil" data-id="@kullanici.FilmTurNumber" class="btn-delete" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-5"></div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".btn-update").click(function () {
+            $(".bootstrapmodal").modal("show");
+            var id = $(this).attr("data-id");
+
+            $.ajax({
+                url: '/FilmTur/FilmTurGetir',
+                type: 'POST',
+                dataType: 'json',
+                data: { "id": id },
+                success: function (data) {
+                    $("#FilmTurNumber").val(data.FilmTurNumber); //val içindeki değerler textbox içindeki gelenlerdir.ÖNEMLİDİR
+                    $("#FilmTurName").val(data.FilmTurName);
+                }
+            });
+        });
+
+    });
+</script>
+<script type="text/javascript">
+    $(document).on("click", ".btn-delete", function () {
+        var confirmDelete = confirm("silme işlemini onaylıyormusun ?");
+        if (confirmDelete) {
+            var id = $(this).attr("data-id");
+            var deleteTr = $(this).closest("tr");
+            $.ajax({
+                url: '/FilmTur/Delete/' + id,
+                type: 'POST',
+                success: function (result) {
+                    if (result == 1) {
+                        deleteTr.remove();
+                    }
+                    else {
+                        alert("işlem sırasında hata oluştu bey  efendi");
+                    }
+                }
+            });
+        }
+    });
+</script>
