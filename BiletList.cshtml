@@ -1,0 +1,113 @@
+﻿@model List<MvcSinemaOdev.ViewModel.BiletViewModel>
+
+<meta charset="utf-8">
+<title>jQuery UI Dialog - Default functionality</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-9">
+        <table class=" table table-inverse">
+            <thead>
+                <tr>
+                    <td>
+                        Film ID
+                    </td>
+                    <td>
+                        Bilet Tarih
+                    </td>
+                    <td>
+                        Koltuk Numara
+                    </td>
+                    <td>
+                        Satış Numara
+                    </td>
+                    <td>
+                        Güncelle
+                    </td>
+                    <td>Sil</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in Model)
+                {
+                    <tr>
+                        <td>
+                            @f.FilmIDNumber
+                        </td>
+                        <td>
+                            @f.BiletTarihNumber
+                        </td>
+                        <td>
+                            @f.BiletKoltukNumaraNumber
+                        </td>
+                        <td>
+                            @f.SatisIDNumber
+                        </td>
+                      
+                        <td>
+                            <input type="button" style="background-color:#f64747" value="Güncelle" data-id="@f.BiletIDNumber" class="btn-update" />
+                        </td>
+                        <td>
+                            <input type="button" style="background-color:#ff0000" value="Sil" data-id="@f.BiletIDNumber" class="btn-delete" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".btn-update").click(function () {
+            $("#dialog-user").dialog("open");
+            var id = $(this).attr("data-id");
+
+            $.ajax({
+                url: '/Bilet/BiletGetir',
+                type: 'POST',
+                dataType: 'json',
+                data: { "id": id },
+                success: function (data) {
+                    $("#FilmIDNumber").val(data.FilmIDNumber); //val içindeki değerler textbox içindeki gelenlerdir.ÖNEMLİDİR
+                    $("#BiletTarihNumber").val(data.BiletTarihNumber);
+                    $("#BiletKoltukNumaraNumber").val(data.BiletKoltukNumaraNumber);
+                    $("#SatisIDNumber").val(data.SatisIDNumber);
+                    $("#BiletIDNumber").val(data.BiletIDNumber);
+                    
+
+
+                }
+            });
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).on("click", ".btn-delete", function () {
+        var confirmDelete = confirm("silme işlemini onaylıyormusun ?");
+        if (confirmDelete) {
+            var id = $(this).attr("data-id");
+            var deleteTr = $(this).closest("tr");
+            $.ajax({
+                url: '/Bilet/Delete/' + id,
+                type: 'POST',
+                success: function (result) {
+                    if (result == 1) {
+                        deleteTr.remove();
+                    }
+                    else {
+                        alert("işlem sırasında hata oluştu bey  efendi");
+                    }
+                }
+            });
+        }
+    });
+</script>
