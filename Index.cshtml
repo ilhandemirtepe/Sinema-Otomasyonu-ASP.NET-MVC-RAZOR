@@ -1,58 +1,111 @@
-﻿@{
-    Layout = null;
+﻿@model MvcSinemaOdev.ViewModel.SalonViewModel
+@{
+    ViewBag.Title = "Index";
 }
 
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-    <style type="text/css">
-        .UstresimCss {
-            background-image: url(../../Content/Resimler/Welcome-Birds-Animated-Picture.gif);
-            width: 100%;
-            height: 80px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-size: contain;
-            margin-left: 500px;
-        }
-
-      
-    </style>
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="UstresimCss">
-
-
-            </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-                <div class="img-fluid" style=" background-image: url(../../Content/Resimler/cinema.jpg);">
-                    <@for (int x = 1; x <6 ;x++ )
-                    {
-
-                      for (int i = 0; i <10; i++)
-                        {
-                            
-                           <input id="Button1" type="button" value="x,i" class="btn btn-primary"  />
-                        }
-
-                    }
-
-                </div>
-
-            </div>
-            <div class="col-md-1"></div>
-        </div>
-
-
-
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<div class="col-md-1">
+    <a class="btn btn-success " data-toggle="modal" data-target=".bootstrapmodal">Salon Ekle</a>
+</div>
+<div class="col-md-6">
+    <div id="user-content">
+        @Html.Action("SalonList", "Salon")
     </div>
-</body>
-</html>
+    <div class="col-md-6">
+        <div class="modal fade bootstrapmodal" role="dialog">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-title">
+                        <button type="button" class="btn btn-group-justified btn-primary ">İşlemler</button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Ajax.BeginForm("Create", "Salon", FormMethod.Post, new AjaxOptions { OnSuccess = "Create" }, new { id = "frm-create" }))
+                        {
+                            @Html.HiddenFor(m => m.SalonIDNumber)
+
+                            <div>
+                                Salon  Ad:
+
+                                @Html.TextBoxFor(m => m.SalonAdNumber, new { @class = "form-control" })
+                            </div>
+                            <div>
+
+                                Salon  Kapasite:
+
+                                @Html.TextBoxFor(m => m.SalonKapasiteNumber, new { @class = "form-control" })
+                            </div>
+                            <div>
+                                Salon  Sıra Sayısı
+
+                                @Html.TextBoxFor(m => m.SalonSiraSayisiNumber, new { @class = "form-control" })
+
+                            </div>
+                            <div>
+                                Seans Seç
+                                @Html.DropDownList("SeansIDNumber", ViewBag.SeansIDNumber as SelectList, "----Seans Seçiniz-----", new { @class = "form-control" })
+
+                            </div>
+                            <div>
+                                <input type="submit" value="Kaydet" class="btn success" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-5">
+</div>
+<script type="text/javascript">
+    function Create(result) {   //ekleme sonucunda tekrardann listeleme yap
+        if (result == "1") {
+            window.location.href = "@Url.Action("Index","Salon")";
+
+
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
